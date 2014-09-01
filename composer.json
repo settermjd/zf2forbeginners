@@ -1,0 +1,17 @@
+{
+    "name": "settermjd/zf2forbeginners",
+    "description": "Zend Framework 2 For Beginners Codebase",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2",
+        "php"
+    ],
+    "homepage": "https://leanpub.com/zendframework2-for-beginners",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.3.*",
+        "zendframework/zftool": "dev-master",
+        "slm/mail": "dev-master"
+    }
+}

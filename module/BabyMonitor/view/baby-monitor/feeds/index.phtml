@@ -1,0 +1,11 @@
+Action "index", controller "Feeds", module "BabyMonitor".
+
+<?php print $this->url('feeds', array(
+    'controller' => 'feeds',
+    'action' => 'index'
+)); ?>
+
+<?php echo $this->partial(
+    'babymonitor/feeds/results/search/default',
+    array('resultset' => $resultset)
+); ?>
