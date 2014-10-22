@@ -39,4 +39,22 @@ class ControllerTest extends AbstractHttpControllerTestCase
             "h1", "Feeds Home"
         );
     }
+
+    public function testFeedManagePageCanBeAccessed()
+    {
+        $this->dispatch('/baby-monitor/feeds/manage');
+        $this->assertResponseStatusCode(200);
+        $this->assertModuleName('BabyMonitor');
+        $this->assertControllerName(
+            'BabyMonitor\Controller\Feeds'
+        );
+        $this->assertControllerClass(
+            'FeedsController'
+        );
+        $this->assertActionName("Manage");
+        $this->assertMatchedRouteName('feeds/manage');
+        $this->assertQueryContentContains(
+            "h1", "Manage Feeds"
+        );
+    }
 }

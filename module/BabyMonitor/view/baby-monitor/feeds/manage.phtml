@@ -69,7 +69,7 @@ echo $this->form()->openTag($form);
 <?php echo $this->formHidden($form->get('feedId'));?>
 <?php echo $this->formSubmit($form->get('submit')); ?>&nbsp;
 <a href="<?php print $this->url('feeds'); ?>" class="btn"
-   title="<?php print $this->translate($this->cancelTitle); ?>"
+   title="<?php print $this->translate('Cancel'); ?>"
     ><?php print $this->translate('Cancel'); ?></a>
 
 <?php echo $this->form()->closeTag(); ?>
