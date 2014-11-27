@@ -107,14 +107,14 @@ class FeedsController extends AbstractActionController
                 );
             }
         } else {
-            $resultset = $this->_feedTable->fetchMostRecentFeeds(
+            $resultset = $this->feedTable->fetchMostRecentFeeds(
                 self::DEFAULT_FEED_COUNT
             );
         }
 
         return new ViewModel(
             array(
-                'resultset' => $resultset
+                'paginator' => $this->getPaginator($resultset)
             )
         );
     }
