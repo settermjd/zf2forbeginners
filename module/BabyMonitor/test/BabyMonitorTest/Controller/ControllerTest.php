@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mattsetter
- * Date: 23/08/14
- * Time: 07:28
- */
 
 namespace BabyMonitor\test\BabyMonitoryTest\Controller;
 
