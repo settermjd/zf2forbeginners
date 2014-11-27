@@ -168,29 +168,8 @@ class FeedsController extends AbstractActionController
                     );
                 }
 
-
-                if (is_array($resultset)) {
-                    $paginator = new Paginator(
-                        new ArrayAdapter($resultset)
-                    );
-                } else {
-                    $paginator = new Paginator(
-                        new Iterator($resultset)
-                    );
-                }
-
-                $paginator->setCurrentPageNumber(
-                    $this->params()->fromRoute(
-                        'page',
-                        self::DEFAULT_PAGE
-                    )
-                );
-
-                $paginator->setItemCountPerPage(
-                    $this->params()->fromRoute(
-                        'perPage',
-                        self::DEFAULT_RECORDS_PER_PAGE
-                    )
+                $paginator = $this->getPaginator(
+                    $this->feedTable->fetchByDateRange($startDate, $endDate)
                 );
             }
         }
@@ -203,6 +182,35 @@ class FeedsController extends AbstractActionController
                 ),
             )
         );
+    }
+
+    protected function getPaginator($resultset)
+    {
+        if (is_array($resultset)) {
+            $paginator = new Paginator(
+                new ArrayAdapter($resultset)
+            );
+        } else {
+            $paginator = new Paginator(
+                new Iterator($resultset)
+            );
+        }
+
+        $paginator->setCurrentPageNumber(
+            $this->params()->fromRoute(
+                'page',
+                self::DEFAULT_PAGE
+            )
+        );
+
+        $paginator->setItemCountPerPage(
+            $this->params()->fromRoute(
+                'perPage',
+                self::DEFAULT_RECORDS_PER_PAGE
+            )
+        );
+
+        return $paginator;
     }
 
     public function deleteAction()
