@@ -50,28 +50,28 @@ class FeedsController extends AbstractActionController
     const KEY_ALL_RESULTS = "recent_feeds";
 
 
-    protected $_appConfig;
+    protected $appConfig;
 
     /**
      * @var FeedTable
      */
-    protected $_feedTable;
+    protected $feedTable;
 
     /**
      * @var \Zend\Cache\Storage\Adapter\AbstractAdapter
      */
-    protected $_cache;
+    protected $cache;
 
     public function __construct(FeedTable $feedTable, $appConfig = null, $cache = null)
     {
-        $this->_feedTable = $feedTable;
+        $this->feedTable = $feedTable;
 
         if (!is_null($appConfig)) {
-            $this->_appConfig = $appConfig;
+            $this->appConfig = $appConfig;
         }
 
         if (!is_null($cache)) {
-            $this->_cache = $cache;
+            $this->cache = $cache;
         }
     }
 
@@ -92,17 +92,17 @@ class FeedsController extends AbstractActionController
 
     public function indexAction()
     {
-        if (!is_null($this->_cache)) {
-            if (!$this->_cache->hasItem(self::KEY_ALL_RESULTS)) {
-                $resultset = $this->_feedTable->fetchMostRecentFeeds(
+        if (!is_null($this->cache)) {
+            if (!$this->cache->hasItem(self::KEY_ALL_RESULTS)) {
+                $resultset = $this->feedTable->fetchMostRecentFeeds(
                     self::DEFAULT_FEED_COUNT
                 );
-                $this->_cache->setItem(
+                $this->cache->setItem(
                     self::KEY_ALL_RESULTS,
                     $resultset->toArray()
                 );
             } else {
-                $resultset = $this->_cache->getItem(
+                $resultset = $this->cache->getItem(
                     self::KEY_ALL_RESULTS
                 );
             }
@@ -168,7 +168,6 @@ class FeedsController extends AbstractActionController
                     );
                 }
 
-                $resultset = $this->_feedTable->fetchByDateRange($startDate, $endDate);
 
                 if (is_array($resultset)) {
                     $paginator = new Paginator(
@@ -218,7 +217,7 @@ class FeedsController extends AbstractActionController
                 )
             );
             if ($form->isValid()) {
-                $feedTableExists = $this->_feedTable->fetchById(
+                $feedTableExists = $this->feedTable->fetchById(
                     $form->getInputFilter()->getValue('feedId')
                 );
                 if (!$feedTableExists) {
@@ -233,7 +232,7 @@ class FeedsController extends AbstractActionController
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                if ($this->_feedTable->delete($form->getInputFilter()->getValue('feedId'))) {
+                if ($this->feedTable->delete($form->getInputFilter()->getValue('feedId'))) {
                     $feed = new FeedModel();
                     $feed->exchangeArray($form->getData());
                     $this->flashMessenger()->addInfoMessage("Feed Deleted.");
@@ -261,7 +260,7 @@ class FeedsController extends AbstractActionController
 
         if ($this->getRequest()->isGet()) {
             if (!empty($feedId)) {
-                if ($feed = $this->_feedTable->fetchById($feedId)) {
+                if ($feed = $this->feedTable->fetchById($feedId)) {
                     $form->setData($feed->getArrayCopy());
                 } else {
                     return $this->redirect()->toRoute(
@@ -278,7 +277,7 @@ class FeedsController extends AbstractActionController
             if ($form->isValid()) {
                 $feed = new FeedModel();
                 $feed->exchangeArray($form->getData());
-                $feed->feedId = $this->_feedTable->save($feed);
+                $feed->feedId = $this->feedTable->save($feed);
                 $this->getEventManager()->trigger(
                     'Feed.Create',
                     $this,
