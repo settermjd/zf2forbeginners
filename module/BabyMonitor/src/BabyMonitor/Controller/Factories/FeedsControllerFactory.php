@@ -18,14 +18,25 @@ use Zend\ServiceManager\FactoryInterface,
 
 class FeedsControllerFactory implements FactoryInterface
 {
+    protected $cache = null;
+    protected $feedTable = null;
+
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $sm = $serviceLocator->getServiceLocator();
-        $feedTable = $sm->get('BabyMonitor\Tables\FeedTable');
-        $cache = $sm->get('BabyMonitor\Cache\Application');
+
+        if ($sm->has('BabyMonitor\Tables\FeedTable')) {
+            $this->feedTable = $sm->get('BabyMonitor\Tables\FeedTable');
+        }
+
+        if ($sm->has('BabyMonitor\Cache\Application')) {
+            $this->cache = $sm->get('BabyMonitor\Cache\Application');
+        }
+        
         $config = $sm->get('Config');
         $appConfig = (array_key_exists('app', $config)) ? $config['app'] : null;
-        $controller = new FeedsController($feedTable, $appConfig, $cache);
+        
+        $controller = new FeedsController($this->feedTable, $appConfig, $this->cache);
 
         return $controller;
     }

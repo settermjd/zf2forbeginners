@@ -1,5 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * The Feeds Controller
@@ -97,10 +96,7 @@ class FeedsController extends AbstractActionController
                 $resultset = $this->feedTable->fetchMostRecentFeeds(
                     self::DEFAULT_FEED_COUNT
                 );
-                $this->cache->setItem(
-                    self::KEY_ALL_RESULTS,
-                    $resultset->toArray()
-                );
+                $this->cache->setItem(self::KEY_ALL_RESULTS, $resultset->toArray());
             } else {
                 $resultset = $this->cache->getItem(
                     self::KEY_ALL_RESULTS
