@@ -89,7 +89,7 @@ class FeedTable
                 ->order('feedDate DESC, feedTime DESC');
             $results = $this->tableGateway->selectWith($select);
 
-            return $results->buffer();
+            return $results;
         }
         return false;
     }

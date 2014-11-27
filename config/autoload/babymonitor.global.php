@@ -13,9 +13,12 @@ return array(
             'options' => array(
                 'cache_dir' => __DIR__ . '/../../data/cache/'
             )
+        ),
+        'plugins' => array(
+            'exception_handler' => array(
+                'throw_exceptions' => false
+            ),
+            'serializer'
         )
     ),
-    'plugins' => array(
-        'serializer'
-    )
 );

@@ -9,5 +9,5 @@ Action "index", controller "Feeds", module "BabyMonitor".
 
 <?php echo $this->partial(
     'babymonitor/feeds/results/search/default',
-    array('resultset' => $resultset)
+    array('paginator' => $this->paginator)
 ); ?>
