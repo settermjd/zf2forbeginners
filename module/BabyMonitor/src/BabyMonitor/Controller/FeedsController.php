@@ -20,6 +20,7 @@ use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Adapter\Iterator;
 use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
+use Zend\Db\ResultSet\ResultSetInterface;
 
 class FeedsController extends AbstractActionController
 {
@@ -180,16 +181,28 @@ class FeedsController extends AbstractActionController
         );
     }
 
+    /**
+     * Retrieve a valid Paginator object to iterate over the results supplied
+     *
+     * @var ResultSetInterface|array $resultset
+     * @return Zend\Paginator\Paginator
+     */
     protected function getPaginator($resultset)
     {
-        if (is_array($resultset)) {
+        if (is_string($resultset)) {
             $paginator = new Paginator(
-                new ArrayAdapter($resultset)
+                new ArrayAdapter(array())
             );
         } else {
-            $paginator = new Paginator(
-                new Iterator($resultset)
-            );
+            if (is_array($resultset)) {
+                $paginator = new Paginator(
+                    new ArrayAdapter($resultset)
+                );
+            } elseif (in_array('\Zend\Db\ResultSet\ResultSetInterface', get_class($resultset))) {
+                $paginator = new Paginator(
+                     new Iterator($resultset)
+                );
+            }
         }
 
         $paginator->setCurrentPageNumber(

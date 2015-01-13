@@ -34,8 +34,7 @@ class ControllerTest extends AbstractHttpControllerTestCase
             'BabyMonitor\Cache\Application', null
         );
 
-        $this->dispatch('/baby-monitor/feeds');
-
+        $this->dispatch('/baby-monitor');
         $this->assertResponseStatusCode(200);
         $this->assertModuleName('BabyMonitor');
         $this->assertControllerName(
@@ -56,7 +55,7 @@ class ControllerTest extends AbstractHttpControllerTestCase
 
     public function testFeedHomePageCanBeAccessed()
     {
-        $this->dispatch('/baby-monitor/feeds');
+        $this->dispatch('/baby-monitor');
         $this->assertResponseStatusCode(200);
         $this->assertModuleName('BabyMonitor');
         $this->assertControllerName(
@@ -66,7 +65,7 @@ class ControllerTest extends AbstractHttpControllerTestCase
             'FeedsController'
         );
         $this->assertActionName("Index");
-        $this->assertMatchedRouteName('feeds/action');
+        $this->assertMatchedRouteName('feeds');
         $this->assertQueryContentContains(
             "h1", "Feeds Home"
         );
@@ -117,7 +116,7 @@ class ControllerTest extends AbstractHttpControllerTestCase
         $serviceManager->setService(
             'BabyMonitor\Tables\FeedTable', $mockTable
         );
-        
+
         $this->dispatch('/baby-monitor/feeds');
 
         $this->assertResponseStatusCode(200);
