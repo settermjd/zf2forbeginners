@@ -49,7 +49,6 @@ class FeedsController extends AbstractActionController
      */
     const KEY_ALL_RESULTS = "recent_feeds";
 
-
     protected $appConfig;
 
     /**
@@ -148,9 +147,7 @@ class FeedsController extends AbstractActionController
 
         if ($this->getRequest()->isGet()) {
             $form->setData($this->params()->fromRoute());
-
             if ($form->isValid()) {
-
                 $startDate = null;
                 if (!is_null($form->getInputFilter()->getValue('startDate', null))) {
                     $startDate = new \DateTime(
@@ -189,7 +186,7 @@ class FeedsController extends AbstractActionController
      */
     protected function getPaginator($resultset)
     {
-        if (is_string($resultset)) {
+        if (is_string($resultset) || empty($resultset)) {
             $paginator = new Paginator(
                 new ArrayAdapter(array())
             );
@@ -198,10 +195,11 @@ class FeedsController extends AbstractActionController
                 $paginator = new Paginator(
                     new ArrayAdapter($resultset)
                 );
-            } elseif (in_array('\Zend\Db\ResultSet\ResultSetInterface', get_class($resultset))) {
-                $paginator = new Paginator(
-                     new Iterator($resultset)
-                );
+            } elseif (
+                is_a($resultset, '\Zend\Db\ResultSet\ResultSetInterface') ||
+                $resultset instanceof \Zend\Db\ResultSet\HydratingResultSet)
+            {
+                $paginator = new Paginator(new Iterator($resultset));
             }
         }
 
